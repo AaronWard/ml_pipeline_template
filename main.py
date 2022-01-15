@@ -23,12 +23,15 @@ def go(config: DictConfig):
         steps_to_execute = list(config["main"]["execute_steps"])
 
 
-    # The below steps coincide with the components within the ./src folder.
+    '''
+    The below steps coincide with the components within the ./src folder.
+
+    '''
     # Download step
-    if "data_extraction" in steps_to_execute:
+    if "download" in steps_to_execute:
 
         _ = mlflow.run(
-            os.path.join(root_path, "src", "download"),
+            os.path.join(root_path, "download"),
             "main",
             parameters={
                 "file_url": config["data"]["file_url"],
@@ -38,9 +41,16 @@ def go(config: DictConfig):
             },
         )
 
-    if "preprocess" in steps_to_execute:
+    if "model" in steps_to_execute:
 
-        ### EXAMPLE - add mlflow code here
+        # Serialize decision tree configuration
+        # Not importing params with CLI because there is a lot.
+        model_config = os.path.abspath("model.yml")
+
+        with open(model_config, "w+") as fp:
+            fp.write(OmegaConf.to_yaml(config["<model>_pipeline"]))
+
+        ## WRITE MLFLOW CODE HERE ##
         pass
 
 if __name__ == "__main__":
