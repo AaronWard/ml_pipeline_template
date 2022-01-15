@@ -1,8 +1,95 @@
 # MLFlow Machine Learning Pipeline Template
 
+## Overview
+
+### Machine Learning Life Cycle:
+```md
+1. Data collection
+2. EDA
+3. Data cleaning (not model specific)
+4. preprocessing
+5. Model training
+6. Evaluation
+    - - -
+7. Deployment
+    * Batch: setup environment for periodic runs for throughput
+    * Real-time: setup API and environment for reliability
+8. Monitoring
+    * Performance drop? Repeat step 1
+```
+- The above list contains the typical steps within the machine learning development life cycle. Most are proficient when it comes to steps 1-6. However, many developers lack experience when it comes to producing the mandatory steps for creating scalable and reproducible machine learning pipelines, which can be deployed and re-trained when needed.
+
+<hr>
+
+## MLFlow project structure:
+- In a MLFlow project, you call the `run()` function in order of sequence to the ML life cycle (*roughly*)
+- An MLFlow project can be broken into 3 parts:
+
+> 1. Code
+> 2. Environment Definition<br>
+    - Dependencies <br>
+    - Not part of the code <br>
+    - YAML file defining environment <br>
+    - Can use coda or docker (if you need Kubernetes)
+> 3. Project definition<br>
+    - Not part of the code<br>
+    - Entry points (executables) and some meta data
 
 
 
+### Components and Artifacts
+
+![Image](./resources/images/components.png)
+
+Component:
+* Action
+* They can be scripts, notebooks or executables.
+
+Artifact:
+* Output of a component
+* Tracked, versioned and stored
+* If you do not want to version your data on the cloud, you can use your own database instance and just log the paths in which the versioned data is stored.
+
+## How it looks altogether:
+
+![Image](./resources/images/MLFlow_project.jpg)
+
+- The above image hows an ML pipeline that has only 1 component, which produces some artifact and versions the artifacts on the cloud.
+- This structure allows for modularity and reusability across the project.
+- Before adding a new utility or component, you should first produce code within a jupyter notebook in the `/notebooks` folder, which will be reviewed.
+- Ideally, you should keep most, if not all, functions within the `/src/_utils` folder.
+
+
+```powershell
+.
+├── MLpipeline.md
+├── MLproject           # Entrypoint for MLFlow
+├── README.md           # Main project doc
+├── conda.yml           # main.py conda environment
+├── config.yaml         # Configuration file
+├── cookie-mlflow-step  # auto-generation of code (don't touch)
+│   ├── README.md
+│   ├── cookiecutter.json
+│   └── {{cookiecutter.step_name}}
+│       ├── MLproject
+│       ├── conda.yml
+│       └── {{cookiecutter.script_name}}
+├── notebooks           # Folder for notebooks
+│   └── eda
+│       └── __init__.py
+├── environment.yml     # Base conda development environment
+├── main.py             # Main driver script for pipeline
+├── resources           # Miscellaneous
+│   └── images
+│       └── MLFlow_project.jpg
+└── src                 # Folder for components
+    ├── _utils          # The underlying code used
+    │   └── __init__.py
+    └── data_extraction # Example component
+        ├── MLproject   # Entrypoint for MLFLow for this component
+        ├── conda.yml   # conda enivornment for this component
+        └── run.py      # script for this component
+```
 
 
 <hr>
@@ -43,7 +130,10 @@ parameters [parameter1,parameter2]: parameter1,parameter2,parameter3
 - This will autogenerate a folder within `src` with the step name you provided.
 - Within this folder you will see a `run.py`. This is some boilerplate code to help you build out your component
 - You will notice that it already has the ability to accept the parameters you specified earlier, and calls the `go()` function.
-- Edit this function to perform what the component aims to achieve. You may import miscallaneous utilities from the `utils` folder.
+- Edit this function to perform what the component aims to achieve. You may import utilities from the `/_utils` folder.
+    ```python
+    os.path.join(root_path, "src", "_utils")
+    ```
 
 ### Adding a new component to main.py
 
