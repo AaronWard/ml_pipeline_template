@@ -160,15 +160,8 @@ if "data_extraction" in steps_to_execute:
 
 ## Usage:
 
-### Run entire pipeline
-
-- `cd` to the root diractor
-```
-mlflow run .
-```
-
 ### Running the entire pipeline:
-- In order to run the pipeline when you are developing, you need to be in the root of the repo folder, then you can execute:
+- In order to run the pipeline when you are developing, you need to `cd` into the root of the repo folder, then you can execute:
 
 ```powershell
 mlflow run .
