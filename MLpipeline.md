@@ -91,8 +91,18 @@ Artifact:
         └── run.py      # script for this component
 ```
 
+<br>
 
-<hr>
+# Getting Started
+
+Firstly, go ahead and `git clone` this repository. Assuming you have already made your own repository for your own project: go to your terminal and copy the template contents using this comment
+
+```powershell
+cp -a ./ml_pipeline_template/* <destination_folder_path>
+```
+
+- Use the command ```ls``` on your destination repository to confirm everything was copied successfully.
+- If everything looks good, navigate to the root of your repo within your terminal
 
 ## Creating base conda environment
 - Firstly we need to create our base conda environment for development.
