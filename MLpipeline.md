@@ -184,14 +184,14 @@ mlflow run .
 - When developing it is useful to be able to run one step at the time. Say you want to run only the download step:
 
 ```powershell
-mlflow run . -P steps=download
+mlflow run . -P hydra_options="main.execute_steps='download'"
 ```
 
 ### Running multiple steps:
-- If you want to run the download and the basic_cleaning steps, you can similarly do:
+- If you want to run the download and the basic_cleaning steps, you can similarly do (*no spaces*):
 
 ```powershell
-mlflow run . -P steps=download,basic_cleaning
+mlflow run . -P hydra_options="main.execute_steps='download,basic_cleaning'"
 ```
 
 ### Overwriting config.yml with Hydra
